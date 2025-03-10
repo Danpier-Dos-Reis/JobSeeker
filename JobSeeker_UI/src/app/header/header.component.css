@@ -1,0 +1,52 @@
+:host {
+    width: 15%;
+    height: 100%;
+    border-color: white;
+    border-width: 1.5px;
+    border-style: solid;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*Header Content*/
+.logo {
+    margin-top: 8vh;
+}
+
+.hideHeaderArrow {
+    width: 50px;
+    height: 50px;
+    margin-top: 2vh;
+    align-self: flex-end;
+    margin-right: 5%;
+    cursor: pointer;
+}
+
+:host ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 5vh;
+}
+
+:host ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/*Todos excepto el último*/
+:host ul li:not(:last-child){
+    margin-bottom: 20px;
+}
+/*Header Content*/
+
+.menu_toggle {
+    position: fixed;
+    cursor: pointer;
+    z-index: 1000;
+}

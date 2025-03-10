@@ -1,42 +1,53 @@
+#=======================Angular Ingnored Files=============================#
+
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+JobSeeker_UI/dist
+JobSeeker_UI/tmp
+JobSeeker_UI/out-tsc
+JobSeeker_UI/bazel-out
 
 # Node
-/node_modules
-npm-debug.log
-yarn-error.log
+JobSeeker_UI/node_modules
+JobSeeker_UI/npm-debug.log
+JobSeeker_UI/yarn-error.log
 
 # IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+JobSeeker_UI/.idea/
+JobSeeker_UI/.project
+JobSeeker_UI/.classpath
+JobSeeker_UI/.c9/
+JobSeeker_UI/*.launch
+JobSeeker_UI/.settings/
+JobSeeker_UI/*.sublime-workspace
 
 # Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
+JobSeeker_UI/.vscode/*
+JobSeeker_UI/!.vscode/settings.json
+JobSeeker_UI/!.vscode/tasks.json
+JobSeeker_UI/!.vscode/launch.json
+JobSeeker_UI/!.vscode/extensions.json
+JobSeeker_UI/.history/*
 
 # Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+JobSeeker_UI/.angular/cache
+JobSeeker_UI/.sass-cache/
+JobSeeker_UI/connect.lock
+JobSeeker_UI/coverage
+JobSeeker_UI/libpeerconnection.log
+JobSeeker_UI/testem.log
+JobSeeker_UI/typings
 
 # System files
-.DS_Store
-Thumbs.db
+JobSeeker_UI/.DS_Store
+JobSeeker_UI/Thumbs.db
+
+#=======================Angular Ingnored Files=============================#
+
+#=======================Server Ingnored Files=============================#
+
+JobSeeker_Server/dist
+JobSeeker_Server/Database
+
+#=======================Angular Ingnored Files=============================#
