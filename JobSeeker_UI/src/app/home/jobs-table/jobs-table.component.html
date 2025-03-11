@@ -1,0 +1,16 @@
+<table class="home-table">
+    <caption>Table of jobs</caption>
+    <thead class="hometable-head">
+        <tr>
+            <td><button (click)="getJobs()" class="btn-getjobrecord">Get Records</button></td>
+        </tr>
+    </thead>
+    <tbody class="scrollable-tbody">
+        <tr *ngFor="let j of jobs;">
+            <td><p>{{j.Id}}</p></td>
+            <td><p>{{j.Title}}</p></td>
+            <td><p>{{j.Day}}</p></td>
+            <td><a href="{{j.Link}}" target="_blank">LINK</a></td>
+        </tr>
+    </tbody>
+</table>

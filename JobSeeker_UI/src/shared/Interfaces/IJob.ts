@@ -1,5 +1,6 @@
 export default interface IJob {
-  Title: string;
-  Day: Date;
-  Link: string;
+    Id: number;
+    Title: string;
+    Day: Date;
+    Link: string;
 }

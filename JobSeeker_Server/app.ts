@@ -7,12 +7,11 @@ const port = 3000;
 
 // Habilitar CORS para permitir peticiones desde cualquier origen
 app.use(cors({
-    // origin: 'http://localhost:4200'  // Cambia esto si el frontend corre en otro dominio
-    origin: '0.0.0.0'  // Cambia esto si el frontend corre en otro dominio
+    origin: 'http://localhost:4200'  // Cambia esto si el frontend corre en otro dominio
 }));
 
 app.post('/find_jobs', async (req, res) => {
-    const jobsOffers:string[] = ["Ayudante Electricista","Electricista","Vendedor"];
+    const jobsOffers:string[] = ["Ayudante Electricista","Programador .Net","Ayudante Mantenimiento"];
     const superEngine = new SuperEngine();
     
     try {
@@ -27,7 +26,7 @@ app.post('/find_jobs', async (req, res) => {
         const insertedRecords:number = await superEngine.insertJobs(ctJobs);
 
         // res.json({ message: 'Page content fetched successfully' });
-        res.json({ message: `It was inserted ${insertedRecords} records` });
+        res.send(`${insertedRecords}`);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch page content' });
     }
@@ -37,7 +36,8 @@ app.get('/all_records', async (req, res) => {
     const superEngine = new SuperEngine();
 
     try {
-        res.send(await superEngine.getJobRecords());
+        const jobs = await superEngine.getJobRecords();
+        res.send(jobs);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch page content' });
     }
