@@ -11,7 +11,7 @@ app.use(cors({
 }));
 
 app.post('/find_jobs', async (req, res) => {
-    const jobsOffers:string[] = ["Ayudante Electricista","Programador .Net","Ayudante Mantenimiento"];
+    const jobsOffers:string[] = ["Operario de Bodega", "Reponedor", "Ayudante Electricista", "Ayudante Mantenimiento","Cajero"];
     const superEngine = new SuperEngine();
     
     try {
