@@ -51,6 +51,25 @@ export default class DAL {
     }
 
     /**
+     * Convert Date on format ISO 8601 to Datetime format "yyyy-MM--DD hh:mm:ss"
+     * @returns string "yyyy-MM--DD hh:mm:ss"
+     */
+    convertISOToLocalDateTime(isoString:string) {
+        const date = new Date(isoString);
+
+        const pad = (n:any) => n.toString().padStart(2, '0');
+
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        const seconds = pad(date.getSeconds());
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+    /**
      * Insert Jobs that wasn't registered into the DB
      * @param title 
      * @param day 
@@ -58,6 +77,7 @@ export default class DAL {
      */
     async insertJobs(title: string, day: Date, link: string): Promise<void> {
         try {
+            let stringDay = this.convertISOToLocalDateTime(day.toString());
             const db = await this.connect();
             const query = `
                 INSERT INTO Job (Title, Day, Link)
@@ -67,7 +87,7 @@ export default class DAL {
                     FROM Job 
                     WHERE Link = ?
                 );`;
-            await db.run(query, [title, day, link, link]);
+            await db.run(query, [title, stringDay, link, link]);
         } catch (error) {
             console.error("Error inserting data:", error);
         }
