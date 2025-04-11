@@ -17,6 +17,12 @@ export class supportApp {
         return insertedRecords;
     }
 
+    public async addChileTJobs(webPage:string,jobsOffers:string[]):Promise<Trabajo[]>{
+        const allPageContent:HTMLElement[] = await this._superEngine.searchDuckDuckGo(webPage,jobsOffers);
+        const arrayJobs:Trabajo[] = this._superEngine.MakeChileTJobs(allPageContent);
+        return arrayJobs;
+    }
+
     public async addCTJobs(webPage:string,jobsOffers:string[]):Promise<Trabajo[]>{
         const allPageContent:HTMLElement[] = await this._superEngine.searchDuckDuckGo(webPage,jobsOffers);
         const arrayJobs:Trabajo[] = this._superEngine.MakeCTJobs(allPageContent);

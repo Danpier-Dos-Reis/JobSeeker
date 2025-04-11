@@ -1,5 +1,8 @@
 import { CTEngine } from './CTEngines/CTEngine';
 import { CTDomEngine } from './CTEngines/CTDomEngine';
+import {ChileTEngine} from './ChileTEngine/ChileTEngine';
+import { ChileTDomEngine } from './ChileTEngine/ChileTDomEngine';
+
 import DAL from "../../DAL/DAL";
 import { Builder, By, Key } from 'selenium-webdriver';
 import { SanitizeEngine } from "./SanitizeEngine";
@@ -8,43 +11,6 @@ import { Trabajo } from "../models/Trabajo";
 export default class SuperEngine {
     private dal = new DAL("./Database/database.db");
     private sanitizer = new SanitizeEngine();
-    
-    /**
-     * Returns and array of Trabajo Objects
-     * @returns Trabajo[] 
-     */
-    public MakeCTJobs(html:HTMLElement[]): Trabajo[] {
-
-        // Task 1: Get the HTML Collection of Job Cards
-        const ctEngine = new CTEngine();
-        const ctDomEngine = new CTDomEngine();
-
-        // Task 2: Get an array of Job Titles, job Days and job Links
-        const jobTitles:string[] = [];
-        const stringJobDays:string[] = [];
-        const jobLinks:string[] = [];
-
-        html.forEach((page) => {
-
-            // Task 1
-            const jobCards = ctDomEngine.getJobHTMLCard(page);
-
-            // Task 2
-            Array.from(jobCards).forEach((cardJob:Element) => {
-                jobTitles.push(ctDomEngine.getJobTitle(cardJob));
-                stringJobDays.push(ctDomEngine.getJobDay(cardJob));
-                jobLinks.push("https://cl.computrabajo.com" + ctDomEngine.getJobLink(cardJob));
-            });
-        });
-
-        // Make an array of Job Days
-        const jobDays:Date[] = ctEngine.getArrayOfJobDays(stringJobDays);
-
-        // Make an array of CompuTrabajo Objects
-        let ctJobs:Trabajo[] = ctEngine.getArrayOfCTJobs(jobTitles,jobDays,jobLinks);
-        
-        return ctJobs;
-    }
 
     /**
      * Open firefox to find jobs
@@ -82,6 +48,85 @@ export default class SuperEngine {
         return allPageContent;
     }
 
+    //#region Page Functions
+
+    /**
+     * Returns and array of Trabajo Objects from ChileTrabajos
+     * @returns Trabajo[] 
+     */
+    public MakeChileTJobs(html:HTMLElement[]): Trabajo[] {
+
+        // Task 1: Get the HTML Collection of Job Cards
+        const chileTEngine = new ChileTEngine();
+        const chileTDomEngine = new ChileTDomEngine();
+
+        // Task 2: Get an array of Job Titles, job Days and job Links
+        const jobTitles:string[] = [];
+        const stringJobDays:string[] = [];
+        const jobLinks:string[] = [];
+
+        html.forEach((page) => {
+
+            // Task 1
+            const jobCards = chileTDomEngine.getJobHTMLCard(page);
+
+            // Task 2
+            Array.from(jobCards).forEach((cardJob:Element) => {
+                jobTitles.push(chileTDomEngine.getJobTitle(cardJob));
+                stringJobDays.push(chileTDomEngine.getJobDay(cardJob));
+                jobLinks.push("https://cl.computrabajo.com" + chileTDomEngine.getJobLink(cardJob));
+            });
+        });
+
+        // Make an array of Job Days
+        const jobDays:Date[] = chileTEngine.getArrayOfJobDays(stringJobDays);
+
+        // Make an array of CompuTrabajo Objects
+        let ctJobs:Trabajo[] = chileTEngine.getArrayOfCTJobs(jobTitles,jobDays,jobLinks);
+        
+        return ctJobs;
+    }
+    /**
+     * Returns and array of Trabajo Objects from Computrabajo
+     * @returns Trabajo[] 
+     */
+    public MakeCTJobs(html:HTMLElement[]): Trabajo[] {
+
+        // Task 1: Get the HTML Collection of Job Cards
+        const ctEngine = new CTEngine();
+        const ctDomEngine = new CTDomEngine();
+
+        // Task 2: Get an array of Job Titles, job Days and job Links
+        const jobTitles:string[] = [];
+        const stringJobDays:string[] = [];
+        const jobLinks:string[] = [];
+
+        html.forEach((page) => {
+
+            // Task 1
+            const jobCards = ctDomEngine.getJobHTMLCard(page);
+
+            // Task 2
+            Array.from(jobCards).forEach((cardJob:Element) => {
+                jobTitles.push(ctDomEngine.getJobTitle(cardJob));
+                stringJobDays.push(ctDomEngine.getJobDay(cardJob));
+                jobLinks.push("https://cl.computrabajo.com" + ctDomEngine.getJobLink(cardJob));
+            });
+        });
+
+        // Make an array of Job Days
+        const jobDays:Date[] = ctEngine.getArrayOfJobDays(stringJobDays);
+
+        // Make an array of CompuTrabajo Objects
+        let ctJobs:Trabajo[] = ctEngine.getArrayOfCTJobs(jobTitles,jobDays,jobLinks);
+        
+        return ctJobs;
+    }
+
+    //#endregion
+
+    //#region DataBase Functions
+
     /**
      * Returns a JSON string of the Job Records
      * @returns string
@@ -107,5 +152,7 @@ export default class SuperEngine {
     async  deleteOldDays(): Promise<void> {
         await this.dal.deleteOldDays();
     }
+
+    //#endregion
 
 }
