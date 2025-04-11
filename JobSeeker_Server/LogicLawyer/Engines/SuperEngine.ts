@@ -1,20 +1,19 @@
-import { CTEngine, CTDomEngine } from "./CTEngine";
+import { CTEngine } from './CTEngines/CTEngine';
+import { CTDomEngine } from './CTEngines/CTDomEngine';
 import DAL from "../../DAL/DAL";
-import { Builder, By, error, Key } from 'selenium-webdriver';
+import { Builder, By, Key } from 'selenium-webdriver';
 import { SanitizeEngine } from "./SanitizeEngine";
-import { CompuTrabajo } from "../models/CompuTrabajo";
+import { Trabajo } from "../models/Trabajo";
 
 export default class SuperEngine {
-
-    private soundPath = 'C:\\Users\\Dan\\Desktop\\Projects\\JobSeeker\\JobSeeker_Server\\assets\\sound.wav';
     private dal = new DAL("./Database/database.db");
     private sanitizer = new SanitizeEngine();
     
     /**
-     * Returns and array of CompuTrabajo Objects
-     * @returns CompuTrabajo[] 
+     * Returns and array of Trabajo Objects
+     * @returns Trabajo[] 
      */
-    public MakeCTJobs(html:HTMLElement[]): CompuTrabajo[] {
+    public MakeCTJobs(html:HTMLElement[]): Trabajo[] {
 
         // Task 1: Get the HTML Collection of Job Cards
         const ctEngine = new CTEngine();
@@ -42,16 +41,16 @@ export default class SuperEngine {
         const jobDays:Date[] = ctEngine.getArrayOfJobDays(stringJobDays);
 
         // Make an array of CompuTrabajo Objects
-        let ctJobs:CompuTrabajo[] = ctEngine.getArrayOfCTJobs(jobTitles,jobDays,jobLinks);
+        let ctJobs:Trabajo[] = ctEngine.getArrayOfCTJobs(jobTitles,jobDays,jobLinks);
         
         return ctJobs;
     }
 
     /**
-     * Open firefox to find jobs in CompuTrabajo.com
+     * Open firefox to find jobs
      * @returns HTMLElement[]
      */
-    async searchDuckDuckGo(jobsOffers:string[]): Promise<HTMLElement[]> {
+    async searchDuckDuckGo(webPage:string,jobsOffers:string[]): Promise<HTMLElement[]> {
 
         const driver = await new Builder()
             .forBrowser('firefox')
@@ -63,7 +62,7 @@ export default class SuperEngine {
         try {
 
             for (let i = 0; i < jobsOffers.length; i++) {
-                await driver.get('https://cl.computrabajo.com/');
+                await driver.get(webPage);
                 const searchBox = await driver.findElement(By.id("prof-cat-search-input"));
                 await searchBox.sendKeys(jobsOffers[i], Key.RETURN);
                 await driver.sleep(10000);
@@ -91,7 +90,7 @@ export default class SuperEngine {
         return await this.dal.getJobRecords();
     }
 
-    async insertJobs(ctJobs:CompuTrabajo[]): Promise<number> {
+    async insertJobs(ctJobs:Trabajo[]): Promise<number> {
         const bRecords:number = await this.dal.getJobCount();
         try {
             for (let i = 0; i < ctJobs.length; i++) {

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import SuperEngine from './LogicLawyer/Engines/SuperEngine';
+import { supportApp } from './supportApp';
+import { Trabajo } from './LogicLawyer/models/Trabajo';
 
 const app = express();
 const port = 3000;
@@ -11,19 +12,37 @@ app.use(cors({
 }));
 
 app.post('/find_jobs', async (req, res) => {
-    const jobsOffers:string[] = ["Operario de Bodega", "Reponedor", "Ayudante Electricista", "Ayudante Mantenimiento","Cajero"];
-    const superEngine = new SuperEngine();
+
+    enum jobPages {
+        "https://cl.computrabajo.com/","https://www.chiletrabajos.cl/"
+    }
+    
+    const jobsOffers:string[] = ["Reponedor","Ayudante Electricista","Ayudante Mantenimiento","Cajero","Operario de Bodega"];
+    const _supportApp = new supportApp();
+    
+    let ctJobs:Trabajo[] = [];
+    let chileTJobs:Trabajo[] = [];
     
     try {
         // Delete Old Days
-        await superEngine.deleteOldDays();
+        await _supportApp.deleteOldDays();
 
-        // Get CompuTrabajo[]
-        const allPageContent:HTMLElement[] = await superEngine.searchDuckDuckGo(jobsOffers);
-        const ctJobs = superEngine.MakeCTJobs(allPageContent);
+        for (let key in jobPages) {
+            //Computrabajo
+            if (key === "0") {
+                const wepPage:string = jobPages[0];
+                let aux:Trabajo[] = await _supportApp.addCTJobs(wepPage,jobsOffers);
+                ctJobs = [...aux];
+            }
+        }
 
-        // Insert Jobs
-        const insertedRecords:number = await superEngine.insertJobs(ctJobs);
+        //Save Jobs in only one array
+        // let allJobs:Trabajo[] = [...ctJobs,...chileTJobs];
+        let allJobs:Trabajo[] = [...ctJobs];
+
+        let insertedRecords:number = await _supportApp.insertJobs(allJobs);
+
+        
 
         // res.json({ message: 'Page content fetched successfully' });
         res.send(`${insertedRecords}`);
@@ -33,10 +52,10 @@ app.post('/find_jobs', async (req, res) => {
 });
 
 app.get('/all_records', async (req, res) => {
-    const superEngine = new SuperEngine();
+    const _supportApp = new supportApp();
 
     try {
-        const jobs = await superEngine.getJobRecords();
+        const jobs = await _supportApp.getJobRecords();
         res.send(jobs);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch page content' });

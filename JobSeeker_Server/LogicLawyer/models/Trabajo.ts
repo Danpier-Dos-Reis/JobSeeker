@@ -1,6 +1,6 @@
 import IJob from "../Interfaces/IJob";
 
-export class CompuTrabajo implements IJob {
+export class Trabajo implements IJob {
   Title: string;
   Day: Date;
   Link: string;
