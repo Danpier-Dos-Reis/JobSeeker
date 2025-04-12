@@ -14,7 +14,7 @@ export class ChileTEngine {
         
         let date:Date[] = [];
         stringJobDays.forEach((day) => {
-             this._chileTEngineString.convertStringToJobDate(day);
+             date.push(this._chileTEngineString.convertStringToJobDate(day));
         });
         return date;
     }
@@ -26,24 +26,24 @@ export class ChileTEngine {
      * @param jobLinks
      * @returns CompuTrabajo[]
      */
-    getArrayOfCTJobs(jobTitles: string[],jobDays: Date[],jobLinks: string[]):Trabajo[] {
+    getArrayOfChileTJobs(jobTitles: string[],jobDays: Date[],jobLinks: string[]):Trabajo[] {
 
-        let ctAux:Trabajo[] = [];
+        let chileTAux:Trabajo[] = [];
 
         let numb:number = jobTitles.length;
         for (let i = 0;i < numb;i++) {
             const job = new Trabajo(jobTitles[i],jobDays[i],jobLinks[i]);
-            ctAux.push(job);
+            chileTAux.push(job);
         }
 
-        // Delete Jobs from other years
-        let ctJobs:Trabajo[] = [];
-        ctAux.forEach((job) => {
-            if (job.Day.getFullYear() != 1999) {
-                ctJobs.push(job);
+        // Delete Jobs from other days
+        let chileTJobs:Trabajo[] = [];
+        chileTAux.forEach((job) => {
+            if (job.Day.getDate() === new Date().getDate()) {
+                chileTJobs.push(job);
             }
         });
-        return ctJobs;
+        return chileTJobs;
     }
 
 }

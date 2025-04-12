@@ -1,8 +1,8 @@
 export class ChileTDomEngine {
 
     getJobHTMLCard(html:HTMLElement): HTMLCollectionOf<Element> {
-        const job = html.getElementsByClassName("box_offer");
-        return job;
+        const jobCards = html.getElementsByClassName("job-item");
+        return jobCards;
     }
 
     getJobTitle(cardJob:Element): string {
@@ -10,9 +10,9 @@ export class ChileTDomEngine {
         return (jobTitle == null) ? "No se obtuvo el titulo" : jobTitle.trim();
     }
 
-    getJobDay(cardJob:Element): string {
-        const jobDay:string|null = cardJob.querySelectorAll("p.fs13")[0].textContent;
-        return (jobDay == null)? "No se obtuvo el dia" : jobDay.trim();
+    getJobDay(cardJob:Element): string {                //<i class="far"></i>//
+        const jobDay:string | null | undefined = cardJob.querySelectorAll("i.far")[0].parentElement?.textContent;
+        return (jobDay == null || jobDay == undefined)? "No se obtuvo el dia" : jobDay.trim();
     }
 
     getJobLink(cardJob:Element): string {

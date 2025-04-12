@@ -29,22 +29,22 @@ app.post('/find_jobs', async (req, res) => {
 
         for (let key in jobPages) {
             //Computrabajo
-            // if (key === "0") {
-            //     const wepPage:string = jobPages[0];
-            //     let aux:Trabajo[] = await _supportApp.addCTJobs(wepPage,jobsOffers);
-            //     ctJobs = [...aux];
-            // }
+            if (key === "0") {
+                const wepPage:string = jobPages[0];
+                let aux:Trabajo[] = await _supportApp.addCTJobs(wepPage,jobsOffers);
+                ctJobs = [...aux];
+            }
+
             //ChileTrabajos
             if (key === "1") {
                 const wepPage:string = jobPages[1];
                 let aux:Trabajo[] = await _supportApp.addChileTJobs(wepPage,jobsOffers);
-                ctJobs = [...aux];
+                chileTJobs = [...aux];
             }
         }
 
         //Save Jobs in only one array
-        // let allJobs:Trabajo[] = [...ctJobs,...chileTJobs];
-        let allJobs:Trabajo[] = [...ctJobs];
+        let allJobs:Trabajo[] = [...ctJobs,...chileTJobs];
 
         let insertedRecords:number = await _supportApp.insertJobs(allJobs);
 

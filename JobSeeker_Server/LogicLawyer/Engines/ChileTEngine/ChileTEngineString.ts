@@ -1,36 +1,25 @@
 export class ChileTEngineString {
-    convertStringToJobDate(dateString:string):Date{
-        let date:Date = new Date();
-        // Mapa de meses en español a número (0-indexado)
-        const monthMap: Record<string, number> = {
-            "enero": 0,
-            "febrero": 1,
-            "marzo": 2,
-            "abril": 3,
-            "mayo": 4,
-            "junio": 5,
-            "julio": 6,
-            "agosto": 7,
-            "septiembre": 8,
-            "octubre": 9,
-            "noviembre": 10,
-            "diciembre": 11,
-          };
-
-          // Extraer día, mes y año
-          const regex = /(\d{1,2}) de (\w+) de (\d{4})/i;
-          const match = dateString.match(regex);
-
-          if (match) {
-            const day = parseInt(match[1], 10);
-            const month = monthMap[match[2].toLowerCase()];
-            const year = parseInt(match[3], 10);
-        
-            date = new Date(year, month, day);
-          } else {
-            console.error("Formato de fecha no válido");
-          }
-
-          return date;
-    }
+  convertStringToJobDate(fechaStr: string): Date {
+    const meses: { [key: string]: number } = {
+      'Enero': 0,
+      'Febrero': 1,
+      'Marzo': 2,
+      'Abril': 3,
+      'Mayo': 4,
+      'Junio': 5,
+      'Julio': 6,
+      'Agosto': 7,
+      'Septiembre': 8,
+      'Octubre': 9,
+      'Noviembre': 10,
+      'Diciembre': 11,
+    };
+  
+    const partes = fechaStr.trim().split(' de ');
+    const dia = parseInt(partes[0], 10);
+    const mes = meses[partes[1].trim()];
+    const anio = parseInt(partes[2], 10);
+  
+    return new Date(anio, mes, dia);
+  }
 }

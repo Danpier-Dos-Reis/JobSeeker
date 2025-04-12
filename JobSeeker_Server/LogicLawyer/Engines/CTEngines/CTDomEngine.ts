@@ -1,8 +1,8 @@
 export class CTDomEngine {
 
     getJobHTMLCard(html:HTMLElement): HTMLCollectionOf<Element> {
-        const job = html.getElementsByClassName("box_offer");
-        return job;
+        const jobCards = html.getElementsByClassName("box_offer");
+        return jobCards;
     }
 
     getJobTitle(cardJob:Element): string {
@@ -10,7 +10,7 @@ export class CTDomEngine {
         return (jobTitle == null) ? "No se obtuvo el titulo" : jobTitle.trim();
     }
 
-    getJobDay(cardJob:Element): string {
+    getJobDay(cardJob:Element): string {                //<p class="fs13"></p>//
         const jobDay:string|null = cardJob.querySelectorAll("p.fs13")[0].textContent;
         return (jobDay == null)? "No se obtuvo el dia" : jobDay.trim();
     }

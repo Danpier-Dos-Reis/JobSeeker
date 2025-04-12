@@ -18,6 +18,13 @@ export default class SuperEngine {
      */
     async searchDuckDuckGo(webPage:string,jobsOffers:string[]): Promise<HTMLElement[]> {
 
+        let idName = "";
+        if (webPage === "https://cl.computrabajo.com/") {
+            idName = "prof-cat-search-input";
+        } else if (webPage === "https://www.chiletrabajos.cl/") {
+            idName = "frm-landingPage1-email";
+        }
+
         const driver = await new Builder()
             .forBrowser('firefox')
             .build();
@@ -29,7 +36,7 @@ export default class SuperEngine {
 
             for (let i = 0; i < jobsOffers.length; i++) {
                 await driver.get(webPage);
-                const searchBox = await driver.findElement(By.id("prof-cat-search-input"));
+                const searchBox = await driver.findElement(By.id(idName));
                 await searchBox.sendKeys(jobsOffers[i], Key.RETURN);
                 await driver.sleep(10000);
                 pageContent = await driver.findElement(By.tagName('body')).getAttribute('innerHTML');
@@ -74,18 +81,19 @@ export default class SuperEngine {
             Array.from(jobCards).forEach((cardJob:Element) => {
                 jobTitles.push(chileTDomEngine.getJobTitle(cardJob));
                 stringJobDays.push(chileTDomEngine.getJobDay(cardJob));
-                jobLinks.push("https://cl.computrabajo.com" + chileTDomEngine.getJobLink(cardJob));
+                jobLinks.push(chileTDomEngine.getJobLink(cardJob));
             });
         });
 
         // Make an array of Job Days
         const jobDays:Date[] = chileTEngine.getArrayOfJobDays(stringJobDays);
 
-        // Make an array of CompuTrabajo Objects
-        let ctJobs:Trabajo[] = chileTEngine.getArrayOfCTJobs(jobTitles,jobDays,jobLinks);
+        // Make an array of ChileTrabajos Objects
+        let chileTJobs:Trabajo[] = chileTEngine.getArrayOfChileTJobs(jobTitles,jobDays,jobLinks);
         
-        return ctJobs;
+        return chileTJobs;
     }
+
     /**
      * Returns and array of Trabajo Objects from Computrabajo
      * @returns Trabajo[] 
